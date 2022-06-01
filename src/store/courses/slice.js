@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  courseData: [],
+  coursesData: [],
   languages: [],
 };
 
@@ -12,8 +12,11 @@ const coursesSlice = createSlice({
     setLanguagesAction: (state, action) => {
       state.languages = action.payload;
     },
+    setCoursesAction: (state, action) => {
+      state.coursesData = action.payload;
+    },
   },
 });
 
-export const { setLanguagesAction } = coursesSlice.actions;
+export const { setLanguagesAction, setCoursesAction } = coursesSlice.actions;
 export default coursesSlice.reducer;

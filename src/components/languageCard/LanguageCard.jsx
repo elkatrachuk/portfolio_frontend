@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const LanguageCard = (props) => {
   const { id, name } = props.language;
   return (
-    <Link to="/ghj">
+    <Link to={`/languages/${id}`}>
       <Card sx={{ maxWidth: 345, mb: 5 }}>
         <CardActionArea>
           <CardMedia
