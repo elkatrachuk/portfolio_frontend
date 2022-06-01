@@ -14,8 +14,22 @@ const Navigation = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Link to="/">Home Page</Link>
-        <Link to="/courses/mostDiscussed">Most discussed</Link>
+        <Link to="/">
+          <Button
+            color="inherit"
+            sx={{ color: "white", textUnderline: "none", fontWeight: "bold" }}
+          >
+            Home Page
+          </Button>
+        </Link>
+        <Link to="/courses/mostDiscussed">
+          <Button
+            color="inherit"
+            sx={{ color: "white", textUnderline: "none", fontWeight: "bold" }}
+          >
+            Most discussed
+          </Button>
+        </Link>
       </Toolbar>
     </AppBar>
   );

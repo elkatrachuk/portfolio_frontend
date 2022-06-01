@@ -1,5 +1,9 @@
 import axios from "axios";
-import { setCoursesAction, setLanguagesAction } from "./slice";
+import {
+  setCoursesAction,
+  setCurrentCourseAction,
+  setLanguagesAction,
+} from "./slice";
 
 const getLanguages = async (dispatch, getState) => {
   try {
@@ -18,4 +22,14 @@ const getCoursesByLanguageId = (id) => async (dispatch, getState) => {
   } catch (error) {}
 };
 
-export { getLanguages, getCoursesByLanguageId };
+const getCourseById = (courseId, languageId) => async (dispatch, getState) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:4000/courses/languages/${languageId}/courses/${courseId}`
+    );
+    const course = response.data;
+    dispatch(setCurrentCourseAction(course));
+  } catch (error) {}
+};
+
+export { getLanguages, getCoursesByLanguageId, getCourseById };

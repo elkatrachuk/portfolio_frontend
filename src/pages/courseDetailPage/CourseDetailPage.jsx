@@ -1,4 +1,11 @@
+import { Box } from "@mui/material";
+import CourseDetails from "../../components/courseDetails/CourseDetails";
+
 const CourseDetailPage = () => {
-  return <div>Course Detail Page</div>;
+  return (
+    <Box pt={5} pb={5}>
+      <CourseDetails />
+    </Box>
+  );
 };
 export default CourseDetailPage;
