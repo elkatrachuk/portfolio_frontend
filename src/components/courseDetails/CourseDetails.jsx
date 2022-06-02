@@ -13,26 +13,37 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-const CourseDetails = () => {
+const CourseDetails = (props) => {
   const dispatch = useDispatch();
   const { courseId, languageId } = useParams();
 
-  const course = useSelector(selectCurrentCourse);
-
-  const { title, imageUrl, description, rating, createdAt } = course;
+  const { title, imageUrl, description, rating, createdAt } = props.course;
+  const { Level } = props.course;
+  const { name } = Level;
   const [value, setValue] = useState(rating);
 
   useEffect(() => {
     dispatch(getCourseById(courseId, languageId));
   }, [dispatch]);
   return (
-    <Box display="flex" flexDirection="row" mb={3} ml={5} mr={5}>
+    <Box display="flex" flexDirection="row" mb={3}>
       <Box>
-        {new Date(createdAt).toLocaleDateString("en-US")}
+        <Box display="flex">
+          <Box>
+            <Typography variant="body2" color="text.secondary">
+              {new Date(createdAt).toLocaleDateString("en-US")}
+            </Typography>
+          </Box>
+          <Box ml="auto">
+            <Typography variant="body2" color="text.secondary">
+              level {name}
+            </Typography>
+          </Box>
+        </Box>
         <Card sx={{ width: 250 }}>
           <CardMedia component="img" height="140" image={imageUrl} alt="" />
         </Card>
-        <Box mt={1}>
+        <Box mt={1} display="flex" justifyContent="center">
           <Rating
             name="courseRating"
             value={value}
@@ -42,7 +53,7 @@ const CourseDetails = () => {
           />
         </Box>
       </Box>
-      <Box ml={3}>
+      <Box ml={3} mt={2}>
         <Typography gutterBottom variant="h5" component="div" align="left">
           {title}
         </Typography>

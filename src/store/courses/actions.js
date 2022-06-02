@@ -28,6 +28,7 @@ const getCourseById = (courseId, languageId) => async (dispatch, getState) => {
       `http://localhost:4000/courses/languages/${languageId}/courses/${courseId}`
     );
     const course = response.data;
+    console.log("course", course);
     dispatch(setCurrentCourseAction(course));
   } catch (error) {}
 };
