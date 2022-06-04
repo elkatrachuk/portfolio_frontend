@@ -14,22 +14,36 @@ const Navigation = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Link to="/">
-          <Button
-            color="inherit"
-            sx={{ color: "white", textUnderline: "none", fontWeight: "bold" }}
-          >
-            Home Page
-          </Button>
-        </Link>
-        <Link to="/courses/mostDiscussed">
-          <Button
-            color="inherit"
-            sx={{ color: "white", textUnderline: "none", fontWeight: "bold" }}
-          >
-            Most discussed
-          </Button>
-        </Link>
+        <Box>
+          <Link to="/">
+            <Button
+              color="inherit"
+              sx={{ color: "white", textUnderline: "none", fontWeight: "bold" }}
+            >
+              Home Page
+            </Button>
+          </Link>
+        </Box>
+        <Box flexGrow={1}>
+          <Link to="/courses/mostDiscussed">
+            <Button
+              color="inherit"
+              sx={{ color: "white", textUnderline: "none", fontWeight: "bold" }}
+            >
+              Most discussed
+            </Button>
+          </Link>
+        </Box>
+        <Box>
+          <Link to="/signup">
+            <Button
+              color="inherit"
+              sx={{ color: "white", textUnderline: "none", fontWeight: "bold" }}
+            >
+              Sign up
+            </Button>
+          </Link>
+        </Box>
       </Toolbar>
     </AppBar>
   );
