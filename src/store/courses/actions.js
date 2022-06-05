@@ -12,6 +12,7 @@ const getLanguages = async (dispatch, getState) => {
     dispatch(setLanguagesAction(languages));
   } catch (error) {}
 };
+
 const getCoursesByLanguageId = (id) => async (dispatch, getState) => {
   try {
     const response = await axios.get(
@@ -33,4 +34,19 @@ const getCourseById = (courseId, languageId) => async (dispatch, getState) => {
   } catch (error) {}
 };
 
-export { getLanguages, getCoursesByLanguageId, getCourseById };
+const createNewCourse = (values) => async (dispatch, getState) => {
+  try {
+    const token = getState().authReducer.token;
+    const { language, title, description, level, imageUrl } = values;
+    const response = await axios.post(
+      "http://localhost:4000/courses/create-new-course",
+      { language, title, description, level, imageUrl },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const newCourse = response.data;
+    console.log("newCourse", newCourse);
+    // dispatch(setLanguagesAction(languages));
+  } catch (error) {}
+};
+
+export { getLanguages, getCoursesByLanguageId, getCourseById, createNewCourse };

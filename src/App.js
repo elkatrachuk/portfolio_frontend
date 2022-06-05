@@ -7,6 +7,7 @@ import CoursesPage from "./pages/courses/CoursesPage";
 import CourseDetailPage from "./pages/courseDetailPage/CourseDetailPage";
 import SignUpPage from "./pages/signUp/SignUpPage";
 import LoginPage from "./pages/login/LoginPage";
+import AddCoursesPage from "./pages/courses/addCourse/AddCoursePage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         />
         <Route exact path="/signup" element={<SignUpPage />} />
         <Route exact path="/login" element={<LoginPage />} />
+        <Route exact path="/addcourse" element={<AddCoursesPage />} />
       </Routes>
     </div>
   );

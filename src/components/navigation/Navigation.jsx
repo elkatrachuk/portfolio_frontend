@@ -9,8 +9,16 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectToken } from "../../store/auth/selector";
+import { logOut } from "../../store/auth/slice";
 
 const Navigation = () => {
+  const dispatch = useDispatch();
+  const token = useSelector(selectToken);
+  const logout = () => {
+    dispatch(logOut());
+  };
   return (
     <AppBar position="static">
       <Toolbar>
@@ -24,7 +32,7 @@ const Navigation = () => {
             </Button>
           </Link>
         </Box>
-        <Box flexGrow={1}>
+        <Box>
           <Link to="/courses/mostDiscussed">
             <Button
               color="inherit"
@@ -34,26 +42,46 @@ const Navigation = () => {
             </Button>
           </Link>
         </Box>
-        {/* <Box>
-          <Link to="/signup">
-            <Button
-              color="inherit"
-              sx={{ color: "white", textUnderline: "none", fontWeight: "bold" }}
-            >
-              Sign up
-            </Button>
-          </Link>
-        </Box> */}
         <Box>
-          <Link to="/login">
+          <Link to="/addcourse">
             <Button
               color="inherit"
               sx={{ color: "white", textUnderline: "none", fontWeight: "bold" }}
             >
-              Login
+              Add course
             </Button>
           </Link>
         </Box>
+        {!token ? (
+          <Box ml="auto">
+            <Link to="/login">
+              <Button
+                color="inherit"
+                sx={{
+                  color: "white",
+                  textUnderline: "none",
+                  fontWeight: "bold",
+                }}
+              >
+                Login
+              </Button>
+            </Link>
+          </Box>
+        ) : (
+          <Box ml="auto">
+            <Button
+              onClick={logout}
+              color="inherit"
+              sx={{
+                color: "white",
+                textUnderline: "none",
+                fontWeight: "bold",
+              }}
+            >
+              Logout
+            </Button>
+          </Box>
+        )}
       </Toolbar>
     </AppBar>
   );
