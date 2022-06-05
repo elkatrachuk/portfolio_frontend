@@ -34,13 +34,23 @@ const Navigation = () => {
             </Button>
           </Link>
         </Box>
-        <Box>
+        {/* <Box>
           <Link to="/signup">
             <Button
               color="inherit"
               sx={{ color: "white", textUnderline: "none", fontWeight: "bold" }}
             >
               Sign up
+            </Button>
+          </Link>
+        </Box> */}
+        <Box>
+          <Link to="/login">
+            <Button
+              color="inherit"
+              sx={{ color: "white", textUnderline: "none", fontWeight: "bold" }}
+            >
+              Login
             </Button>
           </Link>
         </Box>

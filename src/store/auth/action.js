@@ -15,4 +15,15 @@ const createUser = (values) => async (dispatch, getState) => {
   } catch (error) {}
 };
 
-export { createUser };
+const loginUser = (values) => async (dispatch, getState) => {
+  const { email, password } = values;
+  try {
+    const response = await axios.post("http://localhost:4000/auth/login", {
+      email,
+      password,
+    });
+    dispatch(setNewUserData(response.data));
+  } catch (error) {}
+};
+
+export { createUser, loginUser };

@@ -6,6 +6,7 @@ import MostDiscussed from "./pages/mostDiscussed/MostDiscussed";
 import CoursesPage from "./pages/courses/CoursesPage";
 import CourseDetailPage from "./pages/courseDetailPage/CourseDetailPage";
 import SignUpPage from "./pages/signUp/SignUpPage";
+import LoginPage from "./pages/login/LoginPage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           element={<MostDiscussed />}
         />
         <Route exact path="/signup" element={<SignUpPage />} />
+        <Route exact path="/login" element={<LoginPage />} />
       </Routes>
     </div>
   );
