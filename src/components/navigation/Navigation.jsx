@@ -42,16 +42,38 @@ const Navigation = () => {
             </Button>
           </Link>
         </Box>
-        <Box>
-          <Link to="/addcourse">
-            <Button
-              color="inherit"
-              sx={{ color: "white", textUnderline: "none", fontWeight: "bold" }}
-            >
-              Add course
-            </Button>
-          </Link>
-        </Box>
+        {token && (
+          <>
+            <Box>
+              <Link to="/addcourse">
+                <Button
+                  color="inherit"
+                  sx={{
+                    color: "white",
+                    textUnderline: "none",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Add course
+                </Button>
+              </Link>
+            </Box>
+            <Box>
+              <Link to="/profile">
+                <Button
+                  color="inherit"
+                  sx={{
+                    color: "white",
+                    textUnderline: "none",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Profile
+                </Button>
+              </Link>
+            </Box>
+          </>
+        )}
         {!token ? (
           <Box ml="auto">
             <Link to="/login">

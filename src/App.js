@@ -8,8 +8,18 @@ import CourseDetailPage from "./pages/courseDetailPage/CourseDetailPage";
 import SignUpPage from "./pages/signUp/SignUpPage";
 import LoginPage from "./pages/login/LoginPage";
 import AddCoursesPage from "./pages/courses/addCourse/AddCoursePage";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { validateToken } from "./store/auth/action";
+import ProfilePage from "./pages/profilePage/ProfilePage";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(validateToken);
+  }, [dispatch]);
+
   return (
     <div className="App">
       <Navigation />
@@ -29,6 +39,7 @@ function App() {
         <Route exact path="/signup" element={<SignUpPage />} />
         <Route exact path="/login" element={<LoginPage />} />
         <Route exact path="/addcourse" element={<AddCoursesPage />} />
+        <Route exact path="/profile" element={<ProfilePage />} />
       </Routes>
     </div>
   );
