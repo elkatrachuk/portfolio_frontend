@@ -6,15 +6,9 @@ import { selectCourses } from "../../store/courses/selector";
 import CourseCard from "../courseCard/CourseCard";
 import Box from "@mui/material/Box";
 
-const CourseList = () => {
-  const dispatch = useDispatch();
-  const { languageId } = useParams();
+const CourseList = (props) => {
+  const { courses } = props;
 
-  const courses = useSelector(selectCourses);
-
-  useEffect(() => {
-    dispatch(getCoursesByLanguageId(languageId));
-  }, [dispatch]);
   return (
     <Box
       ml={5}
@@ -26,9 +20,10 @@ const CourseList = () => {
       // flexWrap="wrap"
       // justifyContent="space-around"
     >
-      {courses.map((course) => {
-        return <CourseCard key={course.id} course={course} />;
-      })}
+      {courses &&
+        courses.map((course) => {
+          return <CourseCard key={course.id} course={course} />;
+        })}
     </Box>
   );
 };
