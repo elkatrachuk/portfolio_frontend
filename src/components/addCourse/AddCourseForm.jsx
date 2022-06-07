@@ -45,7 +45,8 @@ const AddCourseForm = () => {
 
   return (
     <Box width="50%" mt={2} ml="auto" mr="auto">
-      {user && user.avatar && user.isAuthor && user.discription ? (
+      {true ? (
+        // user && user.avatar && user.isAuthor && user.discription
         <Box>
           <Typography gutterBottom variant="h5" component="div" align="left">
             Add new course

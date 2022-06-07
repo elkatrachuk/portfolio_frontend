@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  coursesData: [],
+  coursesData: {
+    rows: [],
+    count: 0,
+  },
   languages: [],
   currentCourse: null,
 };
@@ -14,7 +17,8 @@ const coursesSlice = createSlice({
       state.languages = action.payload;
     },
     setCoursesAction: (state, action) => {
-      state.coursesData = action.payload;
+      state.coursesData.rows = action.payload.courses;
+      state.coursesData.count = action.payload.rowsCount;
     },
     setCurrentCourseAction: (state, action) => {
       state.currentCourse = action.payload;

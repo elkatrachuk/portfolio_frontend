@@ -4,13 +4,16 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { CourseFilters } from "../../components/courseFilters/CourseFilters";
 import CourseList from "../../components/courseList/CourseList";
-import { selectCourses } from "../../store/courses/selector";
+import { selectCoursesData } from "../../store/courses/selector";
 import { getCoursesByLanguageId } from "../../store/courses/actions";
 
 const CoursesPage = () => {
   const dispatch = useDispatch();
   const { languageId } = useParams();
-  const courses = useSelector(selectCourses);
+  const coursesData = useSelector(selectCoursesData);
+  console.log("DDDDDD", coursesData);
+  const courses = coursesData.rows;
+  const rowsCount = coursesData.rowsCount;
   const [courseList, setCourseList] = useState(courses);
 
   const applyFilters = (filterValues) => {
@@ -36,7 +39,7 @@ const CoursesPage = () => {
   return (
     <Box pt={5} pb={5}>
       <CourseFilters applyFilters={applyFilters} />
-      <CourseList courses={courseList} />
+      <CourseList courses={courseList} rowsCount={rowsCount} />
     </Box>
   );
 };

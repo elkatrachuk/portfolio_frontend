@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getCourseById } from "../../store/courses/actions";
+import { getCourseById, setRating } from "../../store/courses/actions";
 import { useParams } from "react-router-dom";
 import { selectCurrentCourse } from "../../store/courses/selector";
 import {
@@ -48,6 +48,7 @@ const CourseDetails = (props) => {
             name="courseRating"
             value={value}
             onChange={(event, newValue) => {
+              dispatch(setRating(courseId, languageId, newValue));
               setValue(newValue);
             }}
           />

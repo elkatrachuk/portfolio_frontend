@@ -18,8 +18,10 @@ const getCoursesByLanguageId = (id) => async (dispatch, getState) => {
     const response = await axios.get(
       `http://localhost:4000/courses/languages/${id}`
     );
-    const courses = response.data;
-    dispatch(setCoursesAction(courses));
+    const courses = response.data.rows;
+    const rowsCount = response.data.count;
+    console.log("VVVVVV", response);
+    dispatch(setCoursesAction({ courses, rowsCount }));
   } catch (error) {}
 };
 
@@ -49,4 +51,36 @@ const createNewCourse = (values) => async (dispatch, getState) => {
   } catch (error) {}
 };
 
-export { getLanguages, getCoursesByLanguageId, getCourseById, createNewCourse };
+const setPaging = (page, limit, languageId) => async (dispatch, getState) => {
+  try {
+    console.log({ page, limit, languageId });
+    const response = await axios.get(
+      `http://localhost:4000/courses/languages/${languageId}`,
+      { params: { page, limit } }
+    );
+    dispatch(setCoursesAction(response.data.rows));
+    console.log("hkjvgf", response);
+  } catch (error) {}
+};
+
+const setRating =
+  (courseId, languageId, rating) => async (dispatch, getState) => {
+    console.log("rating", { courseId, languageId, rating });
+    try {
+      const response = await axios.patch(
+        `http://localhost:4000/courses/languages/${languageId}/courses/${courseId}`,
+        { rating }
+      );
+      console.log("rating", response.data);
+      // dispatch(setCurrentCourseAction(course));
+    } catch (error) {}
+  };
+
+export {
+  getLanguages,
+  getCoursesByLanguageId,
+  getCourseById,
+  createNewCourse,
+  setPaging,
+  setRating,
+};
