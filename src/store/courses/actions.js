@@ -36,7 +36,6 @@ const getCoursesByLanguageId = (params) => async (dispatch, getState) => {
 };
 
 const getCoursesByFilters = (params) => async (dispatch, getState) => {
-  console.log("BBBB", params);
   try {
     const { page, limit, languageId, filterValues } = params;
     const response = await axios.get(

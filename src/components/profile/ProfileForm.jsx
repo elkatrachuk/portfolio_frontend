@@ -21,9 +21,9 @@ const ProfileForm = () => {
   const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
 
-  const avatar = userData?.user?.avatar;
-  const description = userData?.user?.description;
-  const isAuthor = userData?.user?.isAuthor;
+  const avatar = userData.user?.avatar || "";
+  const description = userData.user?.description || "";
+  const isAuthor = userData.user?.isAuthor || "";
 
   const [values, setValues] = useState({
     avatar: "",

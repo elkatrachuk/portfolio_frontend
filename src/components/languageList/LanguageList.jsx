@@ -16,6 +16,7 @@ const LanguageList = () => {
   useEffect(() => {
     dispatch(getLanguages);
   }, [dispatch]);
+
   return (
     <Box
       display="flex"

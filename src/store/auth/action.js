@@ -29,6 +29,7 @@ const loginUser = (values) => async (dispatch, getState) => {
 const validateToken = async (dispatch, getState) => {
   const token = getState().authReducer.token;
   if (!token) {
+    dispatch(logOut());
     return;
   }
   try {
@@ -36,9 +37,7 @@ const validateToken = async (dispatch, getState) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     dispatch(setUser({ user: response.data }));
-    console.log(response);
   } catch (error) {
-    console.log("error", error);
     dispatch(logOut());
   }
 };

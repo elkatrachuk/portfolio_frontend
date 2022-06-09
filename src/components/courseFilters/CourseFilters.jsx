@@ -34,15 +34,6 @@ const CourseFilters = (props) => {
         direction="row"
         justifyContent="flex-start"
       >
-        {/* <TextField
-          size="small"
-          sx={{ width: "100px" }}
-          name="author"
-          label="Author"
-          variant="outlined"
-          value={values.author}
-          onChange={handleChange}
-        /> */}
         <FormControl size="small" sx={{ width: "100px" }}>
           <InputLabel>Rating</InputLabel>
           <Select
