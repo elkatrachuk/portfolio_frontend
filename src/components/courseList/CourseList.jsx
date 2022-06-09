@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Paging from "../paging/Paging";
 
 const CourseList = (props) => {
-  const { courses, rowsCount } = props;
+  const { courses, rowsCount, page, handlePagingChange } = props;
   const pageCount = Math.ceil(rowsCount / 2);
   console.log("props", props);
 
@@ -13,9 +13,15 @@ const CourseList = (props) => {
         courses.map((course) => {
           return <CourseCard key={course.id} course={course} />;
         })}
-      <Box display="flex" justifyContent="flex-end">
-        <Paging pageCount={pageCount} />
-      </Box>
+      {courses && pageCount > 1 && (
+        <Box display="flex" justifyContent="flex-end">
+          <Paging
+            handlePagingChange={handlePagingChange}
+            page={page}
+            pageCount={pageCount}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

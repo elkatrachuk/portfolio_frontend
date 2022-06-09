@@ -5,6 +5,7 @@ import CommentsForm from "./CommentsForm";
 
 const Comments = (props) => {
   const comments = props.comments;
+  const token = props.token;
   return (
     <Box mt={5}>
       <Typography gutterBottom variant="h5" component="div" align="left">
@@ -13,7 +14,7 @@ const Comments = (props) => {
       {comments.map((comment) => {
         return <CommentCard key={comment.id} comment={comment} />;
       })}
-      <CommentsForm />
+      {token && <CommentsForm />}
     </Box>
   );
 };

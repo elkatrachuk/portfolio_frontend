@@ -20,11 +20,24 @@ const ProfileForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
+
+  const avatar = userData?.user?.avatar;
+  const description = userData?.user?.description;
+  const isAuthor = userData?.user?.isAuthor;
+
   const [values, setValues] = useState({
     avatar: "",
     description: "",
     isAuthor: false,
   });
+
+  useEffect(() => {
+    setValues({
+      avatar,
+      description,
+      isAuthor,
+    });
+  }, [avatar, description, isAuthor]);
 
   const handleUpdateProfile = () => {
     dispatch(updateProfile(values));
@@ -59,6 +72,9 @@ const ProfileForm = () => {
           variant="outlined"
           value={values.avatar}
           onChange={handleChange}
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
         <TextareaAutosize
           name="description"
@@ -82,10 +98,18 @@ const ProfileForm = () => {
           label="I am course author"
         />
       </Box>
+      <Box display="flex" justifyContent="flex-end" mt={2}>
+        <Button onClick={handleUpdateProfile} variant="contained" size="large">
+          Apply
+        </Button>
+      </Box>
       {userData?.user && userData.user.author?.length && (
-        <Box mt={2} mb={2}>
+        <Box mt={5} mb={2}>
+          <Typography gutterBottom variant="h5" component="div" align="left">
+            Your courses
+          </Typography>
           <Stack
-            direction="row"
+            mt={3}
             divider={<Divider orientation="vertical" flexItem />}
             spacing={2}
           >
@@ -107,11 +131,6 @@ const ProfileForm = () => {
           </Stack>
         </Box>
       )}
-      <Box display="flex" justifyContent="flex-end" mt={2}>
-        <Button onClick={handleUpdateProfile} variant="contained" size="large">
-          Apply
-        </Button>
-      </Box>
     </Box>
   );
 };

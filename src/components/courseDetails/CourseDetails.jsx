@@ -1,6 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getCourseById, setRating } from "../../store/courses/actions";
+import {
+  becomeParticipant,
+  getCourseById,
+  setRating,
+} from "../../store/courses/actions";
 import { useParams } from "react-router-dom";
 import { selectCurrentCourse } from "../../store/courses/selector";
 import {
@@ -20,11 +24,20 @@ const CourseDetails = (props) => {
   const { title, imageUrl, description, rating, createdAt } = props.course;
   const { Level } = props.course;
   const { name } = Level;
+  const token = props?.token;
+  const user = props.user;
+  const userId = user?.id;
+  const { participant } = props.course;
+  const isParticipant = participant.find((item) => {
+    return item.id === userId;
+  });
+
   const [value, setValue] = useState(rating);
 
-  useEffect(() => {
-    dispatch(getCourseById(courseId, languageId));
-  }, [dispatch]);
+  const handleParticipant = () => {
+    dispatch(becomeParticipant(languageId, courseId));
+  };
+
   return (
     <Box display="flex" flexDirection="row" mb={3}>
       <Box>
@@ -61,9 +74,17 @@ const CourseDetails = (props) => {
         <Typography variant="body2" color="text.secondary" align="left">
           {description}
         </Typography>
-        <Box display="flex" justifyContent="flex-end" mt={2}>
-          <Button variant="contained">become a participant</Button>
-        </Box>
+        {isParticipant ? (
+          <Box mt={4}> You are already a participant of this course</Box>
+        ) : (
+          token && (
+            <Box display="flex" justifyContent="flex-end" mt={2}>
+              <Button onClick={handleParticipant} variant="contained">
+                become a participant
+              </Button>
+            </Box>
+          )
+        )}
       </Box>
     </Box>
   );

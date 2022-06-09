@@ -7,6 +7,7 @@ const initialState = {
   },
   languages: [],
   currentCourse: null,
+  filters: null,
 };
 
 const coursesSlice = createSlice({
@@ -23,9 +24,23 @@ const coursesSlice = createSlice({
     setCurrentCourseAction: (state, action) => {
       state.currentCourse = action.payload;
     },
+    setFilters: (state, action) => {
+      state.filters = action.payload;
+    },
+    setCommentAction: (state, action) => {
+      state.currentCourse.Comments = [
+        ...state.currentCourse.Comments,
+        action.payload,
+      ];
+    },
   },
 });
 
-export const { setLanguagesAction, setCoursesAction, setCurrentCourseAction } =
-  coursesSlice.actions;
+export const {
+  setLanguagesAction,
+  setCoursesAction,
+  setCurrentCourseAction,
+  setFilters,
+  setCommentAction,
+} = coursesSlice.actions;
 export default coursesSlice.reducer;

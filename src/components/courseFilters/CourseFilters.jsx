@@ -11,7 +11,7 @@ import { Box } from "@mui/system";
 import { useState } from "react";
 
 const CourseFilters = (props) => {
-  const { applyFilters } = props;
+  const { applyFilters, clearFilters } = props;
   const [values, setValues] = useState({
     author: "",
     rating: "",
@@ -78,6 +78,9 @@ const CourseFilters = (props) => {
           }}
         >
           Apply
+        </Button>
+        <Button variant="contained" onClick={clearFilters}>
+          Clear filters
         </Button>
       </Stack>
     </Box>

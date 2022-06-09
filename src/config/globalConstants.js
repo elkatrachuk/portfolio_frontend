@@ -1,0 +1,3 @@
+const COURSES_LIST_LIMIT = 2;
+
+export { COURSES_LIST_LIMIT };

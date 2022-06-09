@@ -1,9 +1,11 @@
 import {
+  Alert,
   Button,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
+  Snackbar,
   Stack,
   TextField,
   Typography,
@@ -11,9 +13,12 @@ import {
 import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { selectLoading, selectMessage } from "../../store/app/selector";
+import { setLoading, setMessage } from "../../store/app/slice";
 import { selectUserData } from "../../store/auth/selector";
 import { createNewCourse, getLanguages } from "../../store/courses/actions";
 import { selectLanguages } from "../../store/courses/selector";
+import Loading from "../loading/Loading";
 
 const AddCourseForm = () => {
   const dispatch = useDispatch();
@@ -24,17 +29,31 @@ const AddCourseForm = () => {
     level: "",
     imageUrl: "",
   });
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    const { language, title, description, level, imageUrl } = values;
+    if (language && title && description && level && imageUrl) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [values]);
+
   const languages = useSelector(selectLanguages);
   const userData = useSelector(selectUserData);
+  const loading = useSelector(selectLoading);
+  const message = useSelector(selectMessage);
+
   const { user } = userData;
 
+  // need select languages for input languages
   useEffect(() => {
     dispatch(getLanguages);
   }, [dispatch]);
-  console.log("languages", languages);
 
   const addNewCourse = () => {
-    dispatch(createNewCourse(values));
+    dispatch(createNewCourse(values, setValues));
   };
   const handleChange = (event) => {
     setValues({
@@ -43,8 +62,30 @@ const AddCourseForm = () => {
     });
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    dispatch(setMessage(false));
+  };
+
   return (
     <Box width="50%" mt={2} ml="auto" mr="auto">
+      <Snackbar
+        open={message}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          sx={{ padding: "20px 50px", fontSize: "16px" }}
+          onClose={handleClose}
+          variant="filled"
+          severity="success"
+        >
+          Course was successfully created
+        </Alert>
+      </Snackbar>
       {true ? (
         // user && user.avatar && user.isAuthor && user.discription
         <Box>
@@ -107,10 +148,21 @@ const AddCourseForm = () => {
               onChange={handleChange}
             />
           </Stack>
-          <Box display="flex" justifyContent="flex-end" mt={2}>
-            <Button onClick={addNewCourse} variant="contained" size="large">
-              Create course
-            </Button>
+          <Box display=" flex" justifyContent="flex-end" mt={2}>
+            {loading ? (
+              <Box mr={8}>
+                <Loading />
+              </Box>
+            ) : (
+              <Button
+                disabled={isButtonDisabled}
+                onClick={addNewCourse}
+                variant="contained"
+                size="large"
+              >
+                Create course
+              </Button>
+            )}
           </Box>
         </Box>
       ) : (

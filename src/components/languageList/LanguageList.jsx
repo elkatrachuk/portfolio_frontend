@@ -4,11 +4,14 @@ import { useEffect } from "react";
 import { getLanguages } from "../../store/courses/actions";
 import { selectLanguages } from "../../store/courses/selector";
 import Box from "@mui/material/Box";
+import { selectLoading } from "../../store/app/selector";
+import Loading from "../loading/Loading";
 
 const LanguageList = () => {
   const dispatch = useDispatch();
 
   const languages = useSelector(selectLanguages);
+  const loading = useSelector(selectLoading);
 
   useEffect(() => {
     dispatch(getLanguages);
@@ -22,9 +25,14 @@ const LanguageList = () => {
       flexWrap="wrap"
       justifyContent="space-around"
     >
-      {languages.map((language) => {
-        return <LanguageCard key={language.id} language={language} />;
-      })}
+      {loading ? (
+        <Loading />
+      ) : (
+        languages &&
+        languages.map((language) => {
+          return <LanguageCard key={language.id} language={language} />;
+        })
+      )}
     </Box>
   );
 };
