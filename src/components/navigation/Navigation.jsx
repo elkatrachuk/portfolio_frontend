@@ -3,17 +3,20 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken } from "../../store/auth/selector";
 import { logOut } from "../../store/auth/slice";
 
 const Navigation = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const token = useSelector(selectToken);
   const logout = () => {
     dispatch(logOut());
+    navigate("/");
   };
+
   return (
     <AppBar position="static">
       <Toolbar>

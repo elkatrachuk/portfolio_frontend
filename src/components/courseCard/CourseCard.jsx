@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 
 const CourseCard = (props) => {
-  console.log("CARD", props);
   const { imageUrl, title, description, id } = props.course;
   return (
     <Box display="flex" flexDirection="row" mb={3}>

@@ -13,8 +13,9 @@ import {
 import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { selectLoading, selectMessage } from "../../store/app/selector";
-import { setLoading, setMessage } from "../../store/app/slice";
+import { setMessage } from "../../store/app/slice";
 import { selectUserData } from "../../store/auth/selector";
 import { createNewCourse, getLanguages } from "../../store/courses/actions";
 import { selectLanguages } from "../../store/courses/selector";
@@ -27,13 +28,12 @@ const AddCourseForm = () => {
     title: "",
     description: "",
     level: "",
-    imageUrl: "",
   });
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
-    const { language, title, description, level, imageUrl } = values;
-    if (language && title && description && level && imageUrl) {
+    const { language, title, description, level } = values;
+    if (language && title && description && level) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
@@ -52,9 +52,6 @@ const AddCourseForm = () => {
     dispatch(getLanguages);
   }, [dispatch]);
 
-  const addNewCourse = () => {
-    dispatch(createNewCourse(values, setValues));
-  };
   const handleChange = (event) => {
     setValues({
       ...values,
@@ -67,6 +64,32 @@ const AddCourseForm = () => {
       return;
     }
     dispatch(setMessage(false));
+  };
+
+  const [image, setImage] = useState();
+
+  const addNewCourse = () => {
+    dispatch(createNewCourse({ values, setValues, image }));
+  };
+
+  const uploadImage = async (e) => {
+    const files = e.target.files;
+    const data = new FormData();
+    data.append("file", files[0]);
+    //first parameter is always upload_preset, second is the name of the preset
+    data.append("upload_preset", "i1yxelru");
+
+    //post request to Cloudinary, remember to change to your own link
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dud55b6nb/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+
+    const file = await res.json();
+    setImage(file.url); //put the url in local state, next step you can send it to the backend
   };
 
   return (
@@ -86,8 +109,7 @@ const AddCourseForm = () => {
           Course was successfully created
         </Alert>
       </Snackbar>
-      {true ? (
-        // user && user.avatar && user.isAuthor && user.discription
+      {user && user.isAuthor ? (
         <Box>
           <Typography gutterBottom variant="h5" component="div" align="left">
             Add new course
@@ -140,13 +162,23 @@ const AddCourseForm = () => {
                 <MenuItem value={3}>Senior</MenuItem>
               </Select>
             </FormControl>
-            <TextField
-              name="imageUrl"
-              label="Image link"
-              variant="outlined"
-              value={values.imageUrl}
-              onChange={handleChange}
-            />
+            <Button variant="contained" component="label">
+              Upload File <input onChange={uploadImage} type="file" hidden />
+            </Button>
+            <Box>
+              <img
+                alt=""
+                width="100px"
+                src={
+                  image
+                    ? image
+                    : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"
+                }
+              />
+              {image && (
+                <Box style={{ fontSize: 20 }}>Succesfully uploaded!</Box>
+              )}
+            </Box>
           </Stack>
           <Box display=" flex" justifyContent="flex-end" mt={2}>
             {loading ? (
@@ -166,8 +198,15 @@ const AddCourseForm = () => {
           </Box>
         </Box>
       ) : (
-        <Typography gutterBottom variant="body2" component="div" align="left">
-          If you want to create a new course your have to create a profile
+        <Typography gutterBottom variant="body2" component="div" align="center">
+          If you want to create a new course, your have to create a{" "}
+          <Link
+            style={{ fontWeight: "bold", textDecoration: "underline" }}
+            to="/profile"
+          >
+            profile
+          </Link>{" "}
+          as an author.
         </Typography>
       )}
     </Box>

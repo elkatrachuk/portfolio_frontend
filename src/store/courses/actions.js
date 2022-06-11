@@ -55,7 +55,6 @@ const getCourseById = (courseId, languageId) => async (dispatch, getState) => {
       `http://localhost:4000/courses/languages/${languageId}/courses/${courseId}`
     );
     const course = response.data;
-    console.log("course", course);
     dispatch(setCurrentCourseAction(course));
     dispatch(setLoading(false));
   } catch (error) {
@@ -63,41 +62,39 @@ const getCourseById = (courseId, languageId) => async (dispatch, getState) => {
   }
 };
 
-const createNewCourse = (values, setValues) => async (dispatch, getState) => {
-  dispatch(setLoading(true));
-  try {
-    const token = getState().authReducer.token;
-    const { language, title, description, level, imageUrl } = values;
-    const response = await axios.post(
-      "http://localhost:4000/courses/create-new-course",
-      { language, title, description, level, imageUrl },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    const newCourse = response.data;
-    dispatch(setLoading(false));
-    dispatch(setMessage(true));
-    setValues({
-      language: "",
-      title: "",
-      description: "",
-      level: "",
-      imageUrl: "",
-    });
-  } catch (error) {
-    dispatch(setLoading(false));
-  }
-};
+const createNewCourse =
+  ({ values, setValues, image }) =>
+  async (dispatch, getState) => {
+    dispatch(setLoading(true));
+    try {
+      const token = getState().authReducer.token;
+      const { language, title, description, level } = values;
+      await axios.post(
+        "http://localhost:4000/courses/create-new-course",
+        { language, title, description, level, imageUrl: image },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      dispatch(setLoading(false));
+      dispatch(setMessage(true));
+      setValues({
+        language: "",
+        title: "",
+        description: "",
+        level: "",
+        imageUrl: "",
+      });
+    } catch (error) {
+      dispatch(setLoading(false));
+    }
+  };
 
 const setRating =
   (courseId, languageId, rating) => async (dispatch, getState) => {
-    console.log("rating", { courseId, languageId, rating });
     try {
-      const response = await axios.patch(
+      await axios.patch(
         `http://localhost:4000/courses/languages/${languageId}/courses/${courseId}`,
         { rating }
       );
-      console.log("rating", response.data);
-      // dispatch(setCurrentCourseAction(course));
     } catch (error) {}
   };
 

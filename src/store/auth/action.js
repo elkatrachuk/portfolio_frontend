@@ -1,5 +1,4 @@
 import axios from "axios";
-import SignUpForm from "../../components/signUp/SignUpForm";
 import { setNewUserData, logOut, setUser, setProfile } from "./slice";
 
 const createUser = (values) => async (dispatch, getState) => {
@@ -42,18 +41,28 @@ const validateToken = async (dispatch, getState) => {
   }
 };
 
-const updateProfile = (values) => async (dispatch, getState) => {
-  try {
-    const { avatar, description, isAuthor } = values;
-    console.log("discription", description);
-    const token = getState().authReducer.token;
-    const response = await axios.patch(
-      "http://localhost:4000/auth/update-profile",
-      { avatar, description, isAuthor },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    dispatch(setProfile({ avatar, description, isAuthor }));
-  } catch (error) {}
-};
+const updateProfile =
+  ({ values, image }) =>
+  async (dispatch, getState) => {
+    try {
+      const { description, isAuthor } = values;
+      const token = getState().authReducer.token;
+      const response = await axios.patch(
+        "http://localhost:4000/auth/update-profile",
+        { avatar: image, description, isAuthor },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const resAvatar = response.data.avatar;
+      const resDescription = response.data.description;
+      const resIsAuthor = response.data.isAuthor;
+      dispatch(
+        setProfile({
+          avatar: resAvatar,
+          description: resDescription,
+          isAuthor: resIsAuthor,
+        })
+      );
+    } catch (error) {}
+  };
 
 export { createUser, loginUser, validateToken, updateProfile };

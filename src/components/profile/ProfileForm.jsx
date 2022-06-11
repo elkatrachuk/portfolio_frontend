@@ -1,11 +1,12 @@
 import {
+  Alert,
   Button,
   Checkbox,
   Divider,
   FormControlLabel,
+  Snackbar,
   Stack,
   TextareaAutosize,
-  TextField,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
@@ -23,25 +24,19 @@ const ProfileForm = () => {
 
   const avatar = userData.user?.avatar || "";
   const description = userData.user?.description || "";
-  const isAuthor = userData.user?.isAuthor || "";
+  const isAuthor = userData.user?.isAuthor || false;
 
   const [values, setValues] = useState({
-    avatar: "",
     description: "",
     isAuthor: false,
   });
 
   useEffect(() => {
     setValues({
-      avatar,
       description,
       isAuthor,
     });
-  }, [avatar, description, isAuthor]);
-
-  const handleUpdateProfile = () => {
-    dispatch(updateProfile(values));
-  };
+  }, [description, isAuthor]);
 
   const token = useSelector(selectToken);
   useEffect(() => {
@@ -59,6 +54,46 @@ const ProfileForm = () => {
           : event.target.value,
     });
   };
+
+  const [image, setImage] = useState({
+    url: "",
+    uploaded: false,
+  });
+  useEffect(() => {
+    setImage({ url: avatar, uploaded: false });
+  }, [avatar]);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setImage({ ...image, uploaded: false });
+  };
+
+  const handleUpdateProfile = () => {
+    dispatch(updateProfile({ values, image }));
+  };
+
+  const uploadImage = async (e) => {
+    const files = e.target.files;
+    const data = new FormData();
+    data.append("file", files[0]);
+    //first parameter is always upload_preset, second is the name of the preset
+    data.append("upload_preset", "i1yxelru");
+
+    //post request to Cloudinary, remember to change to your own link
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dud55b6nb/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+
+    const file = await res.json();
+    setImage({ url: file.url, uploaded: true }); //put the url in local state, next step you can send it to the backend
+  };
+
   return (
     <Box width="50%" mt={2} ml="auto" mr="auto">
       <Typography gutterBottom variant="h5" component="div" align="left">
@@ -66,16 +101,36 @@ const ProfileForm = () => {
       </Typography>
 
       <Stack spacing={2} mt={3}>
-        <TextField
-          name="avatar"
-          label="Avatar"
-          variant="outlined"
-          value={values.avatar}
-          onChange={handleChange}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
+        <Button variant="contained" component="label">
+          Upload File <input onChange={uploadImage} type="file" hidden />
+        </Button>
+        <Box>
+          <img
+            alt=""
+            width="100px"
+            src={
+              image.url
+                ? image.url
+                : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"
+            }
+          />
+
+          <Snackbar
+            open={image.uploaded}
+            autoHideDuration={3000}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          >
+            <Alert
+              sx={{ padding: "20px 50px", fontSize: "16px" }}
+              onClose={handleClose}
+              variant="filled"
+              severity="success"
+            >
+              Image was successfully uploaded!
+            </Alert>
+          </Snackbar>
+        </Box>
         <TextareaAutosize
           name="description"
           maxRows={7}
@@ -103,7 +158,7 @@ const ProfileForm = () => {
           Apply
         </Button>
       </Box>
-      {userData?.user && userData.user.author?.length && (
+      {userData?.user && userData.user.author?.length > 0 && (
         <Box mt={5} mb={2}>
           <Typography gutterBottom variant="h5" component="div" align="left">
             Your courses
