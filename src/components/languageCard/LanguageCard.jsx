@@ -7,17 +7,13 @@ import { CardActionArea } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const LanguageCard = (props) => {
-  const { id, name } = props.language;
+  const { id, name, imageUrl } = props.language;
+  console.log(props);
   return (
     <Link to={`/languages/${id}`}>
       <Card sx={{ maxWidth: 345, mb: 5 }}>
         <CardActionArea>
-          <CardMedia
-            component="img"
-            height="140"
-            image="https://img-b.udemycdn.com/course/240x135/851712_fc61_6.jpg"
-            alt="green iguana"
-          />
+          <CardMedia component="img" height="140" image={imageUrl} alt="" />
           <CardContent>
             <Typography
               gutterBottom
