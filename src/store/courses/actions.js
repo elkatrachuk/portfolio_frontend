@@ -36,6 +36,7 @@ const getCoursesByLanguageId = (params) => async (dispatch, getState) => {
 };
 
 const getCoursesByFilters = (params) => async (dispatch, getState) => {
+  dispatch(setLoading(true));
   try {
     const { page, limit, languageId, filterValues } = params;
     const response = await axios.get(
@@ -45,7 +46,10 @@ const getCoursesByFilters = (params) => async (dispatch, getState) => {
     const courses = response.data.rows;
     const rowsCount = response.data.count;
     dispatch(setCoursesAction({ courses, rowsCount }));
-  } catch (error) {}
+    dispatch(setLoading(false));
+  } catch (error) {
+    dispatch(setLoading(false));
+  }
 };
 
 const getCourseById = (courseId, languageId) => async (dispatch, getState) => {
@@ -63,7 +67,7 @@ const getCourseById = (courseId, languageId) => async (dispatch, getState) => {
 };
 
 const createNewCourse =
-  ({ values, setValues, image }) =>
+  ({ values, setValues, image, setImage }) =>
   async (dispatch, getState) => {
     dispatch(setLoading(true));
     try {
@@ -81,8 +85,8 @@ const createNewCourse =
         title: "",
         description: "",
         level: "",
-        imageUrl: "",
       });
+      setImage(null);
     } catch (error) {
       dispatch(setLoading(false));
     }

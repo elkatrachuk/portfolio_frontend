@@ -25,7 +25,9 @@ const CourseCard = (props) => {
       </Box>
       <Box ml={3}>
         <Typography gutterBottom variant="h5" component="div" align="left">
-          {title}
+          <Link to={`/languages/1/courses/${id}`} style={{ color: "#1976d2" }}>
+            {title}
+          </Link>
         </Typography>
         <Typography variant="body2" color="text.secondary" align="left">
           {description}

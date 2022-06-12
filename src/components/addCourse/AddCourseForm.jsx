@@ -69,7 +69,7 @@ const AddCourseForm = () => {
   const [image, setImage] = useState();
 
   const addNewCourse = () => {
-    dispatch(createNewCourse({ values, setValues, image }));
+    dispatch(createNewCourse({ values, setValues, image, setImage }));
   };
 
   const uploadImage = async (e) => {

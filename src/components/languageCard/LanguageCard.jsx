@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 
 const LanguageCard = (props) => {
   const { id, name, imageUrl } = props.language;
-  console.log(props);
   return (
     <Link to={`/languages/${id}`}>
       <Card sx={{ maxWidth: 345, mb: 5 }}>
