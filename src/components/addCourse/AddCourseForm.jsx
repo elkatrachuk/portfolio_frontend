@@ -20,6 +20,7 @@ import { selectUserData } from "../../store/auth/selector";
 import { createNewCourse, getLanguages } from "../../store/courses/actions";
 import { selectLanguages } from "../../store/courses/selector";
 import Loading from "../loading/Loading";
+import MessageBox from "../messageBox/MessageBox";
 
 const AddCourseForm = () => {
   const dispatch = useDispatch();
@@ -94,21 +95,7 @@ const AddCourseForm = () => {
 
   return (
     <Box width="50%" mt={2} ml="auto" mr="auto">
-      <Snackbar
-        open={message}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert
-          sx={{ padding: "20px 50px", fontSize: "16px" }}
-          onClose={handleClose}
-          variant="filled"
-          severity="success"
-        >
-          Course was successfully created
-        </Alert>
-      </Snackbar>
+      <MessageBox open={message} text="Course was successfully created!" />
       {user && user.isAuthor ? (
         <Box>
           <Typography gutterBottom variant="h5" component="div" align="left">

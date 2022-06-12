@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setMessage } from "../app/slice";
 import { setNewUserData, logOut, setUser, setProfile } from "./slice";
 
 const createUser = (values) => async (dispatch, getState) => {
@@ -62,6 +63,7 @@ const updateProfile =
           isAuthor: resIsAuthor,
         })
       );
+      dispatch(setMessage(true));
     } catch (error) {}
   };
 

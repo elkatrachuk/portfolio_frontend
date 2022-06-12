@@ -16,6 +16,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { selectToken, selectUserData } from "../../store/auth/selector";
 import { updateProfile } from "../../store/auth/action";
+import { selectMessage } from "../../store/app/selector";
+import MessageBox from "../messageBox/MessageBox";
+import { setMessage } from "../../store/app/slice";
 
 const ProfileForm = () => {
   const navigate = useNavigate();
@@ -39,6 +42,8 @@ const ProfileForm = () => {
   }, [description, isAuthor]);
 
   const token = useSelector(selectToken);
+  const message = useSelector(selectMessage);
+
   useEffect(() => {
     if (!token) {
       navigate("/");
@@ -63,15 +68,8 @@ const ProfileForm = () => {
     setImage({ url: avatar, uploaded: false });
   }, [avatar]);
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setImage({ ...image, uploaded: false });
-  };
-
   const handleUpdateProfile = () => {
-    dispatch(updateProfile({ values, image }));
+    dispatch(updateProfile({ values, image: image.url }));
   };
 
   const uploadImage = async (e) => {
@@ -92,6 +90,7 @@ const ProfileForm = () => {
 
     const file = await res.json();
     setImage({ url: file.url, uploaded: true }); //put the url in local state, next step you can send it to the backend
+    dispatch(setMessage(true));
   };
 
   return (
@@ -114,22 +113,7 @@ const ProfileForm = () => {
                 : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"
             }
           />
-
-          <Snackbar
-            open={image.uploaded}
-            autoHideDuration={3000}
-            onClose={handleClose}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          >
-            <Alert
-              sx={{ padding: "20px 50px", fontSize: "16px" }}
-              onClose={handleClose}
-              variant="filled"
-              severity="success"
-            >
-              Image was successfully uploaded!
-            </Alert>
-          </Snackbar>
+          <MessageBox open={message} text="Profile was successfully updated!" />
         </Box>
         <TextareaAutosize
           name="description"
