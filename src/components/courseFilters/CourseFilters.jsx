@@ -70,7 +70,12 @@ const CourseFilters = (props) => {
         >
           Apply
         </Button>
-        <Button variant="contained" onClick={clearFilters}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            clearFilters(setValues);
+          }}
+        >
           Clear filters
         </Button>
       </Stack>

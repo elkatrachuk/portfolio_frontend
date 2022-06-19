@@ -4,6 +4,8 @@ import {
   setCoursesAction,
   setCurrentCourseAction,
   setLanguagesAction,
+  setParticipantLoadingAction,
+  setParticipantsAction,
 } from "./slice";
 
 const getLanguages = async (dispatch, getState) => {
@@ -104,7 +106,7 @@ const setRating =
 
 const becomeParticipant =
   (languageId, courseId) => async (dispatch, getState) => {
-    dispatch(setLoading(true));
+    dispatch(setParticipantLoadingAction(true));
     try {
       const token = getState().authReducer.token;
       const response = await axios.post(
@@ -113,10 +115,27 @@ const becomeParticipant =
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const course = response.data;
-      dispatch(setLoading(false));
       dispatch(setCurrentCourseAction(course));
+      dispatch(setParticipantLoadingAction(false));
     } catch (error) {
-      dispatch(setLoading(false));
+      dispatch(setParticipantLoadingAction(false));
+    }
+  };
+
+const deleteParticipant =
+  (languageId, courseId) => async (dispatch, getState) => {
+    dispatch(setParticipantLoadingAction(true));
+    try {
+      const token = getState().authReducer.token;
+      const response = await axios.delete(
+        `http://localhost:4000/courses/languages/${languageId}/courses/${courseId}/delete-participant`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const participant = response.data.participant;
+      dispatch(setParticipantsAction(participant));
+      dispatch(setParticipantLoadingAction(false));
+    } catch (error) {
+      dispatch(setParticipantLoadingAction(false));
     }
   };
 
@@ -146,4 +165,5 @@ export {
   setRating,
   becomeParticipant,
   addComment,
+  deleteParticipant,
 };

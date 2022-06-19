@@ -8,6 +8,7 @@ const initialState = {
   languages: [],
   currentCourse: null,
   filters: null,
+  participantLoading: false,
 };
 
 const coursesSlice = createSlice({
@@ -33,6 +34,12 @@ const coursesSlice = createSlice({
         action.payload,
       ];
     },
+    setParticipantsAction: (state, action) => {
+      state.currentCourse.participant = action.payload;
+    },
+    setParticipantLoadingAction: (state, action) => {
+      state.participantLoading = action.payload;
+    },
   },
 });
 
@@ -42,5 +49,7 @@ export const {
   setCurrentCourseAction,
   setFilters,
   setCommentAction,
+  setParticipantsAction,
+  setParticipantLoadingAction,
 } = coursesSlice.actions;
 export default coursesSlice.reducer;

@@ -38,9 +38,10 @@ const CoursesPage = () => {
       })
     );
   };
-  const clearFilters = () => {
+  const clearFilters = (setValues) => {
     setPage(1);
     dispatch(setFilters(null));
+    setValues({ author: "", rating: "", levelId: "" });
     dispatch(
       getCoursesByFilters({
         page: 1,
@@ -63,6 +64,7 @@ const CoursesPage = () => {
   };
 
   useEffect(() => {
+    dispatch(setFilters(null));
     dispatch(
       getCoursesByLanguageId({ page: 1, limit: COURSES_LIST_LIMIT, languageId })
     );
